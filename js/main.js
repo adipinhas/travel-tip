@@ -50,7 +50,7 @@ document.querySelector('.search-btn').addEventListener('click', (ev) => {
 document.querySelector('.search-input').addEventListener('change', (ev) => {
     onSearchLocation();
 })
-document.querySelector('.copy-location-btn').addEventListener('change', (ev) => {
+document.querySelector('.copy-location-btn').addEventListener('click', (ev) => {
     onCopyLocation();
 })
 
@@ -68,7 +68,7 @@ function onSearchLocation() {
 
 
 
-onCopyLocation()
+// onCopyLocation()
 function onCopyLocation() {
     let currURL = window.location.href;
     locService.getPosition()
