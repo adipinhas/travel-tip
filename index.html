@@ -7,16 +7,20 @@
     <title>Travel tip</title>
 </head>
 <body>
-    <header>
+    <header class="flex align-center">
         <h1>Travel tip</h1>
     </header>
     <main>
         <section class="buttons-container flex align-center space-around">
             <!-- <div class="place-holder" style="background-color: cornsilk;"></div> -->
             <!-- <button class="btn">Click Me</button> -->
+            <div class="search-container flex">
+                <input type="text" class="search-location" placeholder="Search location">
+                <button class="search-btn">Serch</button>
+            </div>
             <button class="set-curr-location-btn">Go to my location</button>
-            <input type="text" class="search-location" placeholder="Search location">
             <button class="copy-location-btn">Copy location</button>
+            <div class="curr-location">Current location: <span></span></div>
         </section>
         <section class="main-container flex">
             <div id="map"></div>
