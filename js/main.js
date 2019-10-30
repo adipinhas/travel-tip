@@ -42,7 +42,10 @@ window.onload = () => {
 
 document.querySelector('.set-curr-location-btn').onclick = () => {
     locService.getPosition()
-        .then(loc => mapService.panTo(loc))
+        .then(loc => {
+            mapService.panTo(loc)
+            mapService.addMarker(loc)
+        })
 }
 
 // document.querySelector('.btn').addEventListener('click', (ev) => {
