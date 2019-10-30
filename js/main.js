@@ -10,6 +10,7 @@ locService.getLocs()
 
 
 window.onload = () => {
+    locService.getPosition()
     mapService.initMap()
         .then(() => {
             mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
@@ -26,7 +27,13 @@ window.onload = () => {
         })
 }
 
-document.querySelector('.btn').addEventListener('click', (ev) => {
-    console.log('Aha!', ev.target);
-    mapService.panTo(35.6895, 139.6917);
-})
+
+document.querySelector('.set-curr-location-btn').onclick = () => {
+    locService.getPosition()
+        .then(loc => mapService.panTo(loc))
+}
+
+// document.querySelector('.btn').addEventListener('click', (ev) => {
+//     console.log('Aha!', ev.target);
+//     mapService.panTo(35.6895, 139.6917);
+// })
