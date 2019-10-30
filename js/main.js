@@ -43,6 +43,7 @@ document.querySelector('.set-curr-location-btn').onclick = () => {
     locService.getPosition()
         .then(loc => {
             mapService.panTo(loc.lat, loc.lng);
+            mapService.addMarker(loc)
             doUpdateWeather(loc.lat, loc,lng);
         })
 }
