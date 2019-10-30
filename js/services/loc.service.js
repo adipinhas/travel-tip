@@ -22,4 +22,11 @@ function getPosition() {
     return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject)
     })
+        .then(data => {
+             console.log(data)
+            let pos = { lat: data.coords.latitude, lng: data.coords.longitude }
+            // console.log('posss', pos)
+            return pos
+        })
+        .catch(res => console.log('dvdecxedx'))
 }
