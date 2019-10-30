@@ -1,4 +1,6 @@
 
+import weatherService from './weather-service.js'
+
 export default {
     initMap,
     addMarker,
@@ -35,6 +37,8 @@ function addMarker(loc) {
 function panTo(lat, lng) {
     var laLatLng = new google.maps.LatLng(lat, lng);
     map.panTo(laLatLng);
+    console.log(lat, lng)
+    
 }
 
 function _connectGoogleApi() {

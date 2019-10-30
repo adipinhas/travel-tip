@@ -15,8 +15,7 @@ window.onload = () => {
     mapService.initMap()
         .then(() => {
             let pos = {lat: 32.0749831, lng: 34.9120554}
-            weatherServise.getWeatherPrm(pos.lat, pos.lng)
-                .then(data => console.log(data))
+            doUpdateWeather(pos.lat, pos.lng);
             mapService.addMarker(pos.lat, pos.lng);
             // mapService.addMarker(32.0749831, 34.9120554);
         })
@@ -42,7 +41,20 @@ window.onload = () => {
 
 document.querySelector('.set-curr-location-btn').onclick = () => {
     locService.getPosition()
-        .then(loc => mapService.panTo(loc))
+        .then(loc => {
+            mapService.panTo(loc.lat, loc.lng);
+            doUpdateWeather(loc.lat, loc,lng);
+        })
+}
+
+function doUpdateWeather(lat, lng) {
+    weatherServise.getWeatherPrm(lat, lng)
+                .then(data => {
+                    document.querySelector('.curr-weather span').innerText = data.main.temp;
+                    document.querySelector('.curr-sky-mode span').innerText = data.weather[0].description;
+                    // document.querySelector('.curr-weather span').innerText = 1;
+                    console.log(data)
+                })
 }
 
 // document.querySelector('.btn').addEventListener('click', (ev) => {

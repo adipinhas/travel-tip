@@ -61,6 +61,7 @@ main {
     height: 100%;
 }
 .weather-container {
+    background-color: chocolate;
     width: 50%;
     height: 100%
 }
