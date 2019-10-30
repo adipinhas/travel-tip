@@ -58,6 +58,8 @@ function _connectGoogleApi() {
     })
 }
 
+console.log(createGeocodeAPI('jerusalem'))
+
 function getGeocodePRM(locationStr) {
     return fetch(createGeocodeAPI(locationStr))
             .then(data => data.json())

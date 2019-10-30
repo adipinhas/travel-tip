@@ -4,6 +4,7 @@ import locService from './services/loc.service.js';
 import mapService from './services/map.service.js';
 import weatherServise from './services/weather-service.js';
 
+const urlParams = new URLSearchParams(window.location.search);
 
 locService.getLocs()
     .then(locs => console.log('locs', locs))
@@ -11,32 +12,18 @@ locService.getLocs()
 
 
 window.onload = () => {
+    let pos;
+    if (urlParams.get('lat') && urlParams.get('lng')) pos = {lat: +urlParams.get('lat'), lng: +urlParams.get('lng')};
+    else pos = {lat: 32.0749831, lng: 34.9120554}
+
     locService.getPosition()
     mapService.initMap()
         .then(() => {
-            let pos = {lat: 32.0749831, lng: 34.9120554}
             doUpdateWeather(pos.lat, pos.lng);
-            mapService.addMarker(pos.lat, pos.lng);
+            mapService.panTo(pos.lat, pos.lng)
         })
         .catch(console.log('INIT MAP ERROR'));
-
-
-    locService.getPosition()
-        .then(pos => {
-            console.log('User position is:', pos.coords);
-        })
-        .catch(err => {
-            console.log('err!!!', err);
-        })
 }
-
-// document.querySelector('.btn').addEventListener('click', (ev) => {
-//     console.log('Aha!', ev.target);
-//     mapService.panTo(35.6895, 139.6917);
-// })
-
-// let pos = {lat: 32.0749831, lng: 34.9120554}
-// document.querySelector('.curr-location span').innerText = pos.lat
 
 document.querySelector('.set-curr-location-btn').onclick = () => {
     locService.getPosition()
@@ -63,16 +50,38 @@ document.querySelector('.search-btn').addEventListener('click', (ev) => {
 document.querySelector('.search-input').addEventListener('change', (ev) => {
     onSearchLocation();
 })
+document.querySelector('.copy-location-btn').addEventListener('change', (ev) => {
+    onCopyLocation();
+})
 
 
 function onSearchLocation() {
     let searchKey = document.querySelector('.search-input').value;
-    document.querySelector('.curr-location').innerText = searchKey;
     mapService.getGeocodePRM(searchKey)
         .then(data => {
+            document.querySelector('.curr-location span').innerText = data.results[0].formatted_address;
             let pos = data.results[0].geometry.location;
             mapService.panTo(pos.lat, pos.lng);
             doUpdateWeather(pos.lat, pos.lng);
         })
+}
 
+
+
+onCopyLocation()
+function onCopyLocation() {
+    let currURL = window.location.href;
+    locService.getPosition()
+        .then(data => {
+            const COPY_URL = `${currURL}?lat=${data.lat}&lng=${data.lng}`;
+            // const copyToClipboard = str => {
+            const newEL = document.createElement('textarea');
+            newEL.value = COPY_URL;
+            document.body.appendChild(newEL);
+            newEL.select();
+            document.execCommand('copy');
+            document.body.removeChild(newEL);
+            //   };
+            console.log(COPY_URL);
+        })
 }
