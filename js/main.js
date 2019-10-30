@@ -17,7 +17,6 @@ window.onload = () => {
             let pos = {lat: 32.0749831, lng: 34.9120554}
             doUpdateWeather(pos.lat, pos.lng);
             mapService.addMarker(pos.lat, pos.lng);
-            // mapService.addMarker(32.0749831, 34.9120554);
         })
         .catch(console.log('INIT MAP ERROR'));
 
@@ -43,8 +42,8 @@ document.querySelector('.set-curr-location-btn').onclick = () => {
     locService.getPosition()
         .then(loc => {
             mapService.panTo(loc.lat, loc.lng);
-            mapService.addMarker(loc)
-            doUpdateWeather(loc.lat, loc,lng);
+            // mapService.addMarker(loc)
+            doUpdateWeather(loc.lat, loc.lng);
         })
 }
 
@@ -53,12 +52,27 @@ function doUpdateWeather(lat, lng) {
                 .then(data => {
                     document.querySelector('.curr-weather span').innerText = data.main.temp;
                     document.querySelector('.curr-sky-mode span').innerText = data.weather[0].description;
-                    // document.querySelector('.curr-weather span').innerText = 1;
+                    // document.querySelector('.curr-location span').innerText = 1;
                     console.log(data)
                 })
 }
 
-// document.querySelector('.btn').addEventListener('click', (ev) => {
-//     console.log('Aha!', ev.target);
-//     mapService.panTo(35.6895, 139.6917);
-// })
+document.querySelector('.search-btn').addEventListener('click', (ev) => {
+    onSearchLocation();
+})
+document.querySelector('.search-input').addEventListener('change', (ev) => {
+    onSearchLocation();
+})
+
+
+function onSearchLocation() {
+    let searchKey = document.querySelector('.search-input').value;
+    document.querySelector('.curr-location').innerText = searchKey;
+    mapService.getGeocodePRM(searchKey)
+        .then(data => {
+            let pos = data.results[0].geometry.location;
+            mapService.panTo(pos.lat, pos.lng);
+            doUpdateWeather(pos.lat, pos.lng);
+        })
+
+}

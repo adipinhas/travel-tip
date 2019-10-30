@@ -4,9 +4,12 @@ import weatherService from './weather-service.js'
 export default {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    createGeocodeAPI,
+    getGeocodePRM
 }
 
+const API_KEY = 'AIzaSyClJEGatJZ5nsl0wqdDZ3KLGNHKVUsY9WA'; //TODO: Enter your API Key
 
 var map;
 
@@ -37,13 +40,13 @@ function addMarker(loc) {
 function panTo(lat, lng) {
     var laLatLng = new google.maps.LatLng(lat, lng);
     map.panTo(laLatLng);
+    addMarker(laLatLng);
     console.log(lat, lng)
     
 }
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = 'AIzaSyClJEGatJZ5nsl0wqdDZ3KLGNHKVUsY9WA'; //TODO: Enter your API Key
     var elGoogleApi = document.createElement('script');
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
     elGoogleApi.async = true;
@@ -54,6 +57,17 @@ function _connectGoogleApi() {
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
 }
+
+function getGeocodePRM(locationStr) {
+    return fetch(createGeocodeAPI(locationStr))
+            .then(data => data.json())
+}
+
+function createGeocodeAPI(locationStr) {
+    return `https://maps.googleapis.com/maps/api/geocode/json?address=${locationStr}&key=${API_KEY}`;
+}
+
+//https://maps.googleapis.com/maps/api/geocode/json?address=jerusalem&key=AIzaSyClJEGatJZ5nsl0wqdDZ3KLGNHKVUsY9WA
 
 
 
